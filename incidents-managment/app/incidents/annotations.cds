@@ -80,6 +80,7 @@ annotate service.Incidents with @(
             {
                 $Type : 'UI.DataField',
                 Value : status_code,
+                Criticality : status.criticality,
             },
             {
                 $Type : 'UI.DataField',
@@ -107,6 +108,13 @@ annotate service.Incidents with @(
             },
         ],
     },
+    UI.Identification : [
+        {
+            $Type : 'UI.DataFieldForAction',
+            Action : 'ProcessorService.CloseIncident',
+            Label : '{i18n>CloseIncident}',
+        },
+    ]
 );
 
 
@@ -153,11 +161,6 @@ annotate service.Conversations with @(
             Value : message,
             Label : 'message',
         },
-        {
-            $Type : 'UI.DataField',
-            Value : timestamp,
-            Label : '{i18n>Date}',
-        },
     ],
 );
 
@@ -190,4 +193,13 @@ annotate service.Incidents with {
         Common.Text : customer.firstName,
         Common.Text.@UI.TextArrangement : #TextOnly,
 )};
+
+annotate service.Incidents actions {
+    CloseIncident @(
+        Common.SideEffects: {
+            TargetProperties: [ 'status_code', 'status' ],
+        }
+    );
+}
+
 

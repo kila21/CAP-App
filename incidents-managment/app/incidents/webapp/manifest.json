@@ -140,12 +140,44 @@
                     "creationMode": {
                       "name": "Inline"
                     }
+                  },
+                  "columns": {
+                    "DateColumn": {
+                      "position": {
+                        "anchor": "DataField::message",
+                        "placement": "After"
+                      },
+                      "header": "{i18n>customDate}",
+                      "template": "ns.incidents.ext.fragment.DateColumn",
+                      "horizontalAlign": "Begin"
+                    }
+                  }
+                }
+              },
+              "content": {
+                "header": {
+                  "actions": {
+                    "CloseIncidentCustom": {
+                      "press": "ns.incidents.ext.controller.CloseIncidentWithMessageBox.closeIncidentWithMessageBox",
+                      "text": "{i18n>closeIncidentWithMessagebox}",
+                      "position": {
+                        "anchor": "DataFieldForAction::ProcessorService.CloseIncident",
+                        "placement": "After"
+                      },
+                      "enabled": "{= !${ui>/isEditable}}",
+                      "visible": "{= !${ui>/isEditable}}"
+                    }
                   }
                 }
               }
             }
           }
         }
+      }
+    },
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {}
       }
     }
   },
