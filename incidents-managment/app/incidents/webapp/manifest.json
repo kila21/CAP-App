@@ -117,6 +117,28 @@
                     "personalization": {
                       "filter": true,
                       "sort": true
+                    },
+                    "quickVariantSelection": {
+                      "hideTableTitle": false,
+                      "showCounts": true
+                    }
+                  },
+                  "columns": {
+                    "StatusProgress": {
+                      "header": "{i18n>status}",
+                      "position": {
+                        "anchor": "DataField::customer::firstName",
+                        "placement": "After"
+                      },
+                      "template": "ns.incidents.ext.fragment.StatusProgress",
+                      "horizontalAlign": "Center",
+                      "availability": "Default"
+                    },
+                    "DataField::customer::firstName": {
+                      "widthIncludingColumnHeader": false
+                    },
+                    "DataField::urgency_code": {
+                      "widthIncludingColumnHeader": true
                     }
                   }
                 }
@@ -177,7 +199,11 @@
     },
     "extends": {
       "extensions": {
-        "sap.ui.controllerExtensions": {}
+        "sap.ui.controllerExtensions": {
+          "sap.fe.templates.ListReport.ListReportController": {
+            "controllerName": "ns.incidents.ext.controller.ListReport"
+          }
+        }
       }
     }
   },

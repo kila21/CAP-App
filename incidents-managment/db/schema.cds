@@ -44,6 +44,7 @@ entity Urgency : CodeList {
       medium = 'M';
       low = 'L'; 
   };
+  criticality: Integer
 }
 
 type EmailAddress : String;

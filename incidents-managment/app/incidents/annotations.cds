@@ -18,17 +18,12 @@ annotate service.Incidents with @(
         },
         {
             $Type : 'UI.DataField',
-            Value : status_code,
-            Label : '{i18n>Status}',
-            Criticality : status.criticality,
-            CriticalityRepresentation : #WithIcon,
-        },
-        {
-            $Type : 'UI.DataField',
             Value : urgency_code,
             Label : '{i18n>Urgency}',
+            Criticality : urgency.criticality,
+            CriticalityRepresentation : #WithoutIcon,
+            @UI.Importance : #Medium,
         },
-    
     ],
     UI.SelectionFields : [
         status_code,
@@ -40,8 +35,8 @@ annotate service.Incidents with @(
             $Type : 'UI.DataField',
             Value : title,
         },
-        TypeName : '',
-        TypeNamePlural : '',
+        TypeName : 'Incidents',
+        TypeNamePlural : '{i18n>IncidentsTableTitle}',
         Description : {
             $Type : 'UI.DataField',
             Value : customer.firstName,
