@@ -74,12 +74,8 @@ annotate service.Incidents with @(
         Data : [
             {
                 $Type : 'UI.DataField',
-                Value : status_code,
-                Criticality : status.criticality,
-            },
-            {
-                $Type : 'UI.DataField',
                 Value : urgency_code,
+                Criticality : urgency.criticality,
             },
         ],
     },
