@@ -1,4 +1,4 @@
-code,descr
-M,Medium
-L,Low
-H,High
+code,descr,criticality
+M,Medium,2
+L,Low,0
+H,High,1

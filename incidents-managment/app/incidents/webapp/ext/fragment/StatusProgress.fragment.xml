@@ -1,0 +1,19 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m">
+	<ProgressIndicator 
+	 core:require="{handler: 'ns/incidents/ext/utils/Formatter'}"
+	 id="idProgressIndicator"
+	 displayValue="{
+	 	path: 'status_code',
+		formatter: 'handler.formatStatusToPercent'
+	 }%"
+	 percentValue="{
+	 	path: 'status_code',
+		formatter: 'handler.formatStatusToPercent',
+		targetType: 'any'
+	 }"
+	 state="{
+		path: 'status_code',
+		formatter: 'handler.formatStatusToState'
+	 }"
+	/>
+</core:FragmentDefinition>

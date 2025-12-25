@@ -18,17 +18,12 @@ annotate service.Incidents with @(
         },
         {
             $Type : 'UI.DataField',
-            Value : status_code,
-            Label : '{i18n>Status}',
-            Criticality : status.criticality,
-            CriticalityRepresentation : #WithIcon,
-        },
-        {
-            $Type : 'UI.DataField',
             Value : urgency_code,
             Label : '{i18n>Urgency}',
+            Criticality : urgency.criticality,
+            CriticalityRepresentation : #WithoutIcon,
+            @UI.Importance : #Medium,
         },
-    
     ],
     UI.SelectionFields : [
         status_code,
@@ -40,8 +35,8 @@ annotate service.Incidents with @(
             $Type : 'UI.DataField',
             Value : title,
         },
-        TypeName : '',
-        TypeNamePlural : '',
+        TypeName : 'Incidents',
+        TypeNamePlural : '{i18n>IncidentsTableTitle}',
         Description : {
             $Type : 'UI.DataField',
             Value : customer.firstName,
@@ -79,11 +74,8 @@ annotate service.Incidents with @(
         Data : [
             {
                 $Type : 'UI.DataField',
-                Value : status_code,
-            },
-            {
-                $Type : 'UI.DataField',
                 Value : urgency_code,
+                Criticality : urgency.criticality,
             },
         ],
     },
@@ -107,6 +99,13 @@ annotate service.Incidents with @(
             },
         ],
     },
+    UI.Identification : [
+        {
+            $Type : 'UI.DataFieldForAction',
+            Action : 'ProcessorService.CloseIncident',
+            Label : '{i18n>CloseIncident}',
+        },
+    ]
 );
 
 
@@ -153,11 +152,6 @@ annotate service.Conversations with @(
             Value : message,
             Label : 'message',
         },
-        {
-            $Type : 'UI.DataField',
-            Value : timestamp,
-            Label : '{i18n>Date}',
-        },
     ],
 );
 
@@ -190,4 +184,13 @@ annotate service.Incidents with {
         Common.Text : customer.firstName,
         Common.Text.@UI.TextArrangement : #TextOnly,
 )};
+
+annotate service.Incidents actions {
+    CloseIncident @(
+        Common.SideEffects: {
+            TargetProperties: [ 'status_code', 'status' ],
+        }
+    );
+}
+
 

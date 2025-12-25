@@ -1,0 +1,26 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:macros="sap.fe.macros">
+
+	<VBox id="idStatusProgressFieldVBox">
+		<ProgressIndicator 
+			core:require="{handler: 'ns/incidents/ext/utils/Formatter'}"
+			visible="{= !${ui>/isEditable} }"
+			id="idFieldProgressIndicator"
+			displayValue="{
+				path: 'status_code',
+				formatter: 'handler.formatStatusToPercent'
+			}%"
+			percentValue="{
+				path: 'status_code',
+				formatter: 'handler.formatStatusToPercent',
+				targetType: 'any'
+			}"
+			state="{
+				path: 'status_code',
+				formatter: 'handler.formatStatusToState'
+			}"/>
+		<macros:Field 
+			id="idMacrosStatusField"
+			metaPath="status_code" 
+			visible="{ui>/isEditable}"/>
+	</VBox>
+</core:FragmentDefinition>

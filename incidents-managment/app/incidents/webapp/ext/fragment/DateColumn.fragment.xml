@@ -1,0 +1,11 @@
+<core:FragmentDefinition 
+ xmlns:core="sap.ui.core" 
+ xmlns="sap.m">
+ 	<Text 
+	 id="idTimestampsText"
+	 core:require="{formatter: 'ns/incidents/ext/utils/Formatter'}"
+	 text="{
+		path: 'timestamp',
+		formatter: 'formatter.formatDate'
+	 }" />
+</core:FragmentDefinition>
