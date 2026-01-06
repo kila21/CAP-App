@@ -1,6 +1,6 @@
 sap.ui.define([
     "sap/ui/core/format/DateFormat",
-    "ns/incidents/ext/utils/Constants"
+    "ns/incidents/ext/utils/constants"
 ], function (
     DateFormat,
     Constants
