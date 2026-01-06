@@ -1,24 +1,25 @@
 {
-  "name": "incidents-managment",
-  "version": "1.0.0",
-  "description": "A simple CAP project.",
-  "dependencies": {
-    "@sap/cds": "^9",
-    "express": "^4"
-  },
-  "devDependencies": {
-    "@cap-js/sqlite": "^2",
-    "cds-plugin-ui5": "^0.13.0"
-  },
-  "scripts": {
-    "start": "cds-serve",
-    "watch-incidents": "cds watch --open ns.incidents/index.html?sap-ui-xx-viewCache=false --livereload false"
-  },
-  "private": true,
-  "workspaces": [
-    "app/*"
-  ],
-  "sapux": [
-    "app/incidents"
-  ]
+	"name": "incidents-managment",
+	"version": "1.0.0",
+	"description": "A simple CAP project.",
+	"dependencies": {
+		"@sap/cds": "^9",
+		"express": "^4"
+	},
+	"devDependencies": {
+		"@cap-js/sqlite": "^2",
+		"cds-plugin-ui5": "^0.13.0",
+		"@sap/dev-cap-tools": "^1.31.0"
+	},
+	"scripts": {
+		"start": "cds-serve",
+		"watch-incidents": "cds watch --open ns.incidents/index.html?sap-ui-xx-viewCache=false --livereload false"
+	},
+	"private": true,
+	"workspaces": [
+		"app/*"
+	],
+	"sapux": [
+		"app/incidents"
+	]
 }
