@@ -7,13 +7,20 @@
     "express": "^4"
   },
   "devDependencies": {
+    "@cap-js/cds-test": "^0.4.1",
     "@cap-js/sqlite": "^2",
     "@sap/cds-dk": "^9",
     "@sap/dev-cap-tools": "^1.31.0",
-    "cds-plugin-ui5": "^0.13.0"
+    "axios": "^1.13.2",
+    "cds-plugin-ui5": "^0.13.0",
+    "chai": "^4.5.0",
+    "chai-as-promised": "^7.1.2",
+    "chai-subset": "^1.6.0",
+    "jest": "^30.2.0"
   },
   "scripts": {
     "start": "cds-serve",
+    "test": "jest tests/test.js",
     "watch-incidents": "cds watch --open ns.incidents/index.html?sap-ui-xx-viewCache=false --livereload false"
   },
   "private": true,
@@ -31,13 +38,19 @@
           "users": {
             "incident.support@tester.sap.com": {
               "password": "initial",
-              "roles": ["support"]
+              "roles": [
+                "support"
+              ]
             },
             "alice": {
-              "roles": ["support"]
+              "roles": [
+                "support"
+              ]
             },
             "bob": {
-              "roles": ["support"]
+              "roles": [
+                "support"
+              ]
             }
           }
         }
