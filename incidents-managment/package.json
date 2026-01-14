@@ -4,7 +4,10 @@
   "description": "A simple CAP project.",
   "dependencies": {
     "@sap/cds": "^9",
-    "express": "^4"
+    "@sap/xsenv": "^6.0.0",
+    "@sap/xssec": "^4",
+    "express": "^4",
+    "passport": "^0.7.0"
   },
   "devDependencies": {
     "@cap-js/cds-test": "^0.4.1",
@@ -16,12 +19,17 @@
     "chai": "^4.5.0",
     "chai-as-promised": "^7.1.2",
     "chai-subset": "^1.6.0",
-    "jest": "^30.2.0"
+    "jest": "^30.2.0",
+    "mbt": "^1.2.29",
+    "rimraf": "^5.0.5"
   },
   "scripts": {
     "start": "cds-serve",
     "test": "jest tests/test.js",
-    "watch-incidents": "cds watch --open ns.incidents/index.html?sap-ui-xx-viewCache=false --livereload false"
+    "watch-incidents": "cds watch --open ns.incidents/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "undeploy": "cf undeploy incidents-managment --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
   },
   "private": true,
   "workspaces": [
@@ -54,7 +62,11 @@
             }
           }
         }
-      }
+      },
+      "[production]": {
+        "auth": "xsuaa"
+      },
+      "html5-repo": true
     }
   }
 }
