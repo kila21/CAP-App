@@ -79,7 +79,7 @@ modules:
       requires:
         - artifacts:
             - nsincidents.zip
-          name: nsincidents
+          name: incidents-managment-ui
           target-path: resources/
   - name: incidents-managment-ui
     type: html5
@@ -87,9 +87,6 @@ modules:
     build-parameters:
       build-result: dist
       builder: custom
-      requires:
-        - name: incidents-managment-auth
-        -
       commands:
         - npm ci
         - npm run build
