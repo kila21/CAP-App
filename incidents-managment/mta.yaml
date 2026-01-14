@@ -14,6 +14,7 @@ build-parameters:
 modules:
   - name: incidents-managment-destination-content
     type: com.sap.application.content
+    path: .
     requires:
       - name: incidents-managment-destination-service
         parameters:
