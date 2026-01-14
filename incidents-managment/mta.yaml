@@ -1,0 +1,127 @@
+_schema-version: 3.3.0
+ID: incidents-managment
+version: 1.0.0
+description: "A simple CAP project."
+parameters:
+  enable-parallel-deployments: true
+  deploy_mode: html5-repo
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
+modules:
+  - name: incidents-managment-destination-content
+    type: com.sap.application.content
+    requires:
+      - name: incidents-managment-destination-service
+        parameters:
+          content-target: true
+      - name: incidents-managment-repo-host
+        parameters:
+          service-key:
+            name: incidents-managment-repo-host-key
+      - name: incidents-managment-auth
+        parameters:
+          service-key:
+            name: incidents-managment-auth-key
+      - name: incidents-managment-srv
+    parameters:
+      content:
+        instances:
+          destinations:
+            - Name: incidents-srv-api
+              URL: ~{incidents-managment-srv/srv-url}
+              Authentication: OAuth2UserTokenExchange
+              ProxyType: Internet
+              Type: HTTP
+              HTML5.ForwardAuthToken: true
+            - Name: incidents-managment-repo-host
+              ServiceInstanceName: incidents-managment-repo-host
+              ServiceKeyName: incidents-managment-repo-host-key
+              sap.cloud.service: incidents.managment.service
+          existing_destinations_policy: update
+  - name: incidents-managment-srv
+    type: nodejs
+    path: gen/srv
+    requires:
+      - name: incidents-managment-auth
+      - name: incidents-managment-db
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+    build-parameters:
+      builder: custom
+      commands: 
+        - npm ci
+        - npx cds build --production
+  - name: incidents-managment-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      build-pack: nodejs_buildpack
+    requires:
+      - name: incidents-managment-db
+  - name: incidents-managment-ui-deployer
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: incidents-managment-repo-host
+        parameters:
+          content-target: true
+          config:
+            HTML5Runtime_enabled: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - nsincidents.zip
+          name: nsincidents
+          target-path: resources/
+  - name: incidents-managment-ui
+    type: html5
+    path: app/incidents
+    build-parameters:
+      build-result: dist
+      builder: custom
+      requires:
+        - name: incidents-managment-auth
+        -
+      commands:
+        - npm ci
+        - npm run build
+      supported-platforms:
+        []
+
+resources:
+  - name: incidents-managment-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: incidents-managment-${org}-${space}
+        tenant-mode: dedicated
+  - name: incidents-managment-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+  - name: incidents-managment-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
+  - name: incidents-managment-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
+  - name: incidents-managment-html5-runtime
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-runtime
