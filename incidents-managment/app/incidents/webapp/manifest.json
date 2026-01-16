@@ -223,6 +223,10 @@
       }
     }
   },
+  "sap.cloud": {
+    "public": true,
+    "service": "incidentsmanagment.service"
+  },
   "sap.fiori": {
     "registrationIds": [],
     "archeType": "transactional"

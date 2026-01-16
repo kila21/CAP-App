@@ -27,5 +27,6 @@
         "$XSAPPNAME.admin"
       ]
     }
-  ]
+  ],
+  "attributes": []
 }
