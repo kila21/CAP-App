@@ -225,7 +225,7 @@
   },
   "sap.cloud": {
     "public": true,
-    "service": "incidentsmanagment.service"
+    "service": "incidentsmanagment"
   },
   "sap.fiori": {
     "registrationIds": [],

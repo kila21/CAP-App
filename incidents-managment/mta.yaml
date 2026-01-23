@@ -18,16 +18,15 @@ modules:
     requires:
       - name: incidents-managment-auth
       - name: incidents-managment-db
-      - name: incidents-managment-destination-service
     provides:
       - name: srv-api
         properties:
           srv-url: ${default-url}
-    parameters: 
+    parameters:
       buildpack: nodejs_buildpack
       instances: 1
-    build-parameters:
-      builder: npm-ci
+      build-parameters:
+        builder: npm-ci
   - name: incidents-managment-db-deployer
     type: hdb
     path: gen/db
@@ -41,7 +40,7 @@ modules:
     requires:
       - name: incidents-managment-auth
       - name: srv-api
-      - name: incidents-managment-repo-host
+      - name: incidents-managment-html5-repo-host
         parameters:
           content-target: true
           config:
@@ -64,83 +63,64 @@ modules:
         - npm run build
       supported-platforms:
         []
-  - name: incidents-managment-destination
+  - name: incidents-managment-destinations
     type: com.sap.application.content
     requires:
       - name: incidents-managment-auth
         parameters:
           service-key:
             name: incidents-managment-auth-key
-      - name: incidents-managment-repo-host
+      - name: incidents-managment-html5-repo-host
         parameters:
           service-key:
-            name: incidents-managment-repo-host-key
-      - name: srv-api
+            name: incidents-managment-html5-repo-host-key
       - name: incidents-managment-destination-service
-        parameters:
+        parameters: 
           content-target: true
+      - name: srv-api
     parameters:
       content:
-        instance:
+        subaccount:
           existing_destinations_policy: update
           destinations:
-            - Name: incidents-managment-repo
-              ServiceInstanceName: incidents-managment-repo-host
-              ServiceKeyName: incidents-managment-repo-host-key
-              sap.cloud.service: incidentsmanagment.service
-            - Authentication: OAuth2UserTokenExchange
-              Name: incidents-managment-auth
+            - Name: incidents-srv-api
+              Authentication: OAuth2UserTokenExchange
+              URL: ~{srv-api/srv-url}
               ServiceInstanceName: incidents-managment-auth
               ServiceKeyName: incidents-managment-auth-key
-              sap.cloud.service: incidentsmanagment.service
+              sap.cloud.service: incidentsmanagment
+            - Name: html5-apps-repo-rt
+              ServiceInstanceName: incidents-managment-html5-repo-host
+              ServiceKeyName: incidents-managment-html5-repo-host-key
+              sap.cloud.service: incidentsmanagment
     build-parameters:
       no-source: true
-
 resources:
   - name: incidents-managment-destination-service
     type: org.cloudfoundry.managed-service
     parameters:
-      config:
-        HTML5Runtime_enabled: true
-        init_data:
-          instance:
-            destinations:
-              - Authentication: NoAuthentication
-                HTML5.DynamicDestination: true
-                HTML5.ForwardAuthToken: true
-                Name: srv-api
-                ProxyType: Internet
-                Type: HTTP
-                URL: ~{srv-api/srv-url}
-              - Authentication: NoAuthentication
-                Name: ui5
-                ProxyType: Internet
-                Type: HTTP
-                URL: https://ui5.sap.com
-            existing_destinations_policy: update
       service: destination
       service-plan: lite
-    requires:
-    - name: srv-api
   - name: incidents-managment-auth
     type: org.cloudfoundry.managed-service
     parameters:
-      service: xsuaa
-      service-plan: application
-      path: ./xs-security.json
       config:
         xsappname: incidents-managment-${org}-${space}
         tenant-mode: dedicated
-        oauth2-configuration:
-          credential-types:
-          - binding-secret
-          - x509
+        role-collections: 
+        - description: generated
+          name: support
+          role-template-references:
+          - $XSAPPNAME.support 
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
   - name: incidents-managment-db
     type: com.sap.xs.hdi-container
     parameters:
       service: hana
       service-plan: hdi-shared
-  - name: incidents-managment-repo-host
+  - name: incidents-managment-html5-repo-host
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
