@@ -18,6 +18,7 @@ modules:
     requires:
       - name: incidents-managment-auth
       - name: incidents-managment-db
+      - name: incidents-managment-destination-service
     provides:
       - name: srv-api
         properties:
