@@ -39,5 +39,6 @@ builder:
       afterTask: generateVersionInfo
       configuration:
         archiveName: incidents
+        relativePath: true
         additionalFiles:
           - xs-app.json

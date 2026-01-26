@@ -80,12 +80,11 @@ modules:
       - name: srv-api
     parameters:
       content:
-        subaccount:
+        instance:
           existing_destinations_policy: update
           destinations:
-            - Name: incidents-srv-api
+            - Name: incidents-managment-auth
               Authentication: OAuth2UserTokenExchange
-              URL: ~{srv-api/srv-url}
               ServiceInstanceName: incidents-managment-auth
               ServiceKeyName: incidents-managment-auth-key
               sap.cloud.service: incidentsmanagment
@@ -101,6 +100,26 @@ resources:
     parameters:
       service: destination
       service-plan: lite
+      config:
+        HTML5Runtime_enabled: true
+        init_data:
+          instance:
+            existing_destinations_policy: update
+            destinations:
+            - Authentication: NoAuthentication
+              HTML5.DynamicDestination: true
+              HTML5.ForwardAuthToken: true
+              Name: srv-api
+              ProxyType: Internet
+              Type: HTTP
+              URL: ~{srv-api/srv-url}
+            - Authentication: NoAuthentication
+              Name: ui5
+              ProxyType: Internet
+              Type: HTTP
+              URL: https://ui5.sap.com
+    requires:
+      - name: srv-api
   - name: incidents-managment-auth
     type: org.cloudfoundry.managed-service
     parameters:
