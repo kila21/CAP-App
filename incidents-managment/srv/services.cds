@@ -10,7 +10,7 @@ service ProcessorService {
     entity Customers as projection on incidents.Customers;
 }
 annotate ProcessorService.Incidents with @odata.draft.enabled;
-annotate ProcessorService with @(requires: 'support');
+// annotate ProcessorService with @(requires: 'support');
 
 service AdminService {
     entity Incidents as projection on incidents.Incidents;
