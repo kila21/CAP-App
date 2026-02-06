@@ -105,6 +105,12 @@ annotate service.Incidents with @(
             Action : 'ProcessorService.CloseIncident',
             Label : '{i18n>CloseIncident}',
         },
+        {
+            $Type: 'UI.DataFieldForAction',
+            Action: 'ProcessorService.PutOnHold',
+            Label: '{i18n>PutOnHold}',
+            ![@UI.Hidden] : { $edmJson: { $Ne: [{ $Path: 'status_code'}, 'N'] } }
+        }
     ]
 );
 
@@ -191,6 +197,14 @@ annotate service.Incidents actions {
             TargetProperties: [ 'status_code', 'status' ],
         }
     );
+
+    PutOnHold @(
+        Common.SideEffects: {
+            TargetProperties: ['status_code', 'status'],
+            TargetEntities: ['conversation']
+        }
+    )
+    
 }
 
 

@@ -2,9 +2,14 @@ const cds = require('@sap/cds');
 
 class ProcessorService extends cds.ApplicationService {
     async init () {
-        this.before("UPDATE", "Incidents", (req) => this.onUpdate(req))
-        this.before("CREATE", "Incidents", (req) => this.changeUrgencyDueToSubject(req.data))
-        this.on("CloseIncident", "Incidents", async (req) => await this.closeIncident(req))
+        const { Incidents, Conversations } = this.entities;
+        this.Incidents = Incidents;
+        this.Conversations = Conversations;
+
+        this.before("UPDATE", "Incidents", (req) => this.onUpdate(req));
+        this.before("CREATE", "Incidents", (req) => this.changeUrgencyDueToSubject(req.data));
+        this.on("CloseIncident", "Incidents", async (req) => await this.closeIncident(req));
+        this.on("PutOnHold", "Incidents", async (req) => await this.putOnHold(req));
 
         return await super.init();
     }
@@ -21,7 +26,6 @@ class ProcessorService extends cds.ApplicationService {
         }
     }
 
-
     async onUpdate (req) {
         const { status_code } = await SELECT.one(req.subject, i => i.status_code).where({ ID: req.data.ID });
 
@@ -32,8 +36,24 @@ class ProcessorService extends cds.ApplicationService {
 
     async closeIncident (req) {
         const { ID } = req.params[0];
-        await UPDATE(req.subject).set({ status_code: 'C' }).where({ ID })
+        await UPDATE(req.subject).set({ status_code: 'C' }).where({ ID });
         return SELECT.one.from(req.subject).where({ ID });
+    }
+
+    async putOnHold (req) {
+        const { ID } = req.params[0];
+        const { reason } = req.data;
+
+        await INSERT.into(this.Conversations).entries({
+            incident_ID: ID,
+            author: req.user.id,
+            message: reason,
+            timestamp: new Date().toISOString()
+        });
+
+        await UPDATE(this.Incidents).set({ status_code: 'H'}).where({ ID });
+
+        return SELECT.one.from(this.Incidents).where({ ID });
     }
 }
 

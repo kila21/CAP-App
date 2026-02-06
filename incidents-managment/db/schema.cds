@@ -7,6 +7,12 @@ entity Incidents : cuid, managed {
   title    : String @title : 'Title';
   urgency  : Association to Urgency;
   status   : Association to Status;
+
+  assignedTo : String;
+  resolutionNotes : String;
+  closureReason : String;
+  resolvedAt: DateTime;
+  closedAt: DateTime;
   
   conversation : Composition of many Conversations on conversation.incident = $self;
 }
