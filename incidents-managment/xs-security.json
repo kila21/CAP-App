@@ -1,0 +1,32 @@
+{
+  "xsappname": "incidents-managment",
+  "tenant-mode": "dedicated",
+  "description": "Security settings for Incident Management",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.support",
+      "description": "Support permission"
+    },
+    {
+      "name": "$XSAPPNAME.admin",
+      "description": "Administrator permission"
+    }
+  ],
+  "role-templates": [
+    {
+      "name": "support",
+      "description": "Support Role",
+      "scope-references": [
+        "$XSAPPNAME.support"
+      ]
+    },
+    {
+      "name": "admin",
+      "description": "Admin Role",
+      "scope-references": [
+        "$XSAPPNAME.admin"
+      ]
+    }
+  ],
+  "attributes": []
+}
