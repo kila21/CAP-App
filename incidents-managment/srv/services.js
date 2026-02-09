@@ -10,6 +10,7 @@ class ProcessorService extends cds.ApplicationService {
         this.before("CREATE", "Incidents", (req) => this.changeUrgencyDueToSubject(req.data));
         this.on("CloseIncident", "Incidents", async (req) => await this.closeIncident(req));
         this.on("PutOnHold", "Incidents", async (req) => await this.putOnHold(req));
+        this.on("AssignToAgent", "Incidents", async (req) => await this.assignToAgent(req));
 
         return await super.init();
     }
@@ -42,6 +43,7 @@ class ProcessorService extends cds.ApplicationService {
 
     async putOnHold (req) {
         const { ID } = req.params[0];
+        console.log("req put on hold: ", req)
         const { reason } = req.data;
 
         await INSERT.into(this.Conversations).entries({
@@ -52,6 +54,35 @@ class ProcessorService extends cds.ApplicationService {
         });
 
         await UPDATE(this.Incidents).set({ status_code: 'H'}).where({ ID });
+
+        return SELECT.one.from(this.Incidents).where({ ID });
+    }
+
+    async assignToAgent (req) {
+        const { ID } = req.params[0];
+        const { agentId } = req.data;
+
+        if (!agentId) {
+            return req.error(400, 'Support agent must be selected');
+        }
+
+        const agent = await SELECT.one.from('sap.capire.incidents.SupportAgents')
+            .where({ ID: agentId, active: true });
+
+        if (!agent) {
+            return req.error(404, `Support agent not found or inactive`);
+        }
+
+        const currentUser = req.user.id || 'anonymous';
+
+        await INSERT.into(this.Conversations).entries({
+            incident_ID: ID,
+            author: currentUser,
+            message: `Incident assigned to agent: ${agent.firstName} ${agent.lastName} by ${currentUser}`,
+            timestamp: new Date().toISOString()
+        })
+
+        await UPDATE(this.Incidents).set({assignedTo_ID: agentId, status_code: 'A'}).where({ ID });
 
         return SELECT.one.from(this.Incidents).where({ ID });
     }

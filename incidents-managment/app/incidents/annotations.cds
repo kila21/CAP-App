@@ -2,9 +2,6 @@ using ProcessorService as service from '../../srv/services';
 using from '../../db/schema';
 
 annotate service.Incidents with @(
-    
-);
-annotate service.Incidents with @(
     UI.LineItem : [
         {
             $Type : 'UI.DataField',
@@ -77,11 +74,11 @@ annotate service.Incidents with @(
                 Value : urgency_code,
                 Criticality : urgency.criticality,
             },
-        ],
-    },
-    UI.FieldGroup #i18nGeneralInformation : {
-        $Type : 'UI.FieldGroupType',
-        Data : [
+            {
+                $Type : 'UI.DataField',
+                Value : assignedTo.firstName,
+                Label : '{i18n>HandledBy}',
+            },
         ],
     },
     UI.FieldGroup #GeneralInformation : {
@@ -109,11 +106,16 @@ annotate service.Incidents with @(
             $Type: 'UI.DataFieldForAction',
             Action: 'ProcessorService.PutOnHold',
             Label: '{i18n>PutOnHold}',
+            ![@UI.Hidden] : { $edmJson: { $Ne: [{ $Path: 'status_code'}, 'A'] } }
+        },
+        {
+            $Type: 'UI.DataFieldForAction',
+            Action: 'ProcessorService.AssignToAgent',
+            Label: '{i18n>AssignToAgent}',
             ![@UI.Hidden] : { $edmJson: { $Ne: [{ $Path: 'status_code'}, 'N'] } }
         }
     ]
 );
-
 
 annotate service.Incidents with {
     status @(
@@ -189,7 +191,69 @@ annotate service.Incidents with {
         Common.ValueListWithFixedValues : false,
         Common.Text : customer.firstName,
         Common.Text.@UI.TextArrangement : #TextOnly,
-)};
+    );
+
+    assignedTo @(
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'SupportAgents',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : assignedTo_ID,
+                    ValueListProperty : 'ID',
+                },
+                {
+                    $Type : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'firstName',
+                },
+                {
+                    $Type : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'email',
+                },
+            ],
+        },
+        Common.ValueListWithFixedValues : false,
+        Common.Text : assignedTo.firstName,
+        Common.Text.@UI.TextArrangement : #TextOnly,
+    )
+};
+
+annotate service.Incidents actions {
+    AssignToAgent(
+        agentId @(
+            Common.Label : '{i18n>SupportAgent}',
+            Common.ValueList : {
+                $Type : 'Common.ValueListType',
+                CollectionPath : 'SupportAgents',
+                Parameters : [
+                    {
+                        $Type : 'Common.ValueListParameterInOut',
+                        LocalDataProperty : agentId,
+                        ValueListProperty : 'ID',
+                    },
+                    {
+                        $Type : 'Common.ValueListParameterDisplayOnly',
+                        ValueListProperty : 'firstName',
+                    },
+                    {
+                        $Type : 'Common.ValueListParameterDisplayOnly',
+                        ValueListProperty : 'lastName',
+                    },
+                    {
+                        $Type : 'Common.ValueListParameterDisplayOnly',
+                        ValueListProperty : 'expertise',
+                    },
+                    {
+                        $Type : 'Common.ValueListParameterDisplayOnly',
+                        ValueListProperty : 'email',
+                    },
+                ],
+            },
+            Common.ValueListWithFixedValues : false,
+        )
+    );
+};
 
 annotate service.Incidents actions {
     CloseIncident @(
@@ -203,8 +267,21 @@ annotate service.Incidents actions {
             TargetProperties: ['status_code', 'status'],
             TargetEntities: ['conversation']
         }
-    )
+    );
     
+    AssignToAgent @(
+        Common.SideEffects: {
+            TargetProperties: ['assignedTo', 'assignedTo_ID', 'status', 'status_code', ],
+            TargetEntities: ['conversation']
+        }
+    )
 }
 
+
+annotate service.SupportAgents with {
+    firstName @(
+        Common.Text : lastName,
+        Common.Text.@UI.TextArrangement : #TextLast,
+    )
+};
 
