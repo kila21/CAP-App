@@ -67,6 +67,16 @@
               "roles": [
                 "support"
               ]
+            },
+            "charlie": {
+              "roles": [
+                "support"
+              ]
+            },
+            "diana": {
+              "roles": [
+                "support"
+              ]
             }
           }
         }
