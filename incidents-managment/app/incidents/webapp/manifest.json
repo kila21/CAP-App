@@ -222,7 +222,7 @@
                         "anchor": "DataFieldForAction::ProcessorService.CloseIncident",
                         "placement": "After"
                       },
-                      "enabled": "{= !${ui>/isEditable}}",
+                      "enabled": "{= ${path: 'status_code', targetType:'any'} !== 'C' }",
                       "visible": "{= !${ui>/isEditable}}"
                     }
                   }
