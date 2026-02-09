@@ -1,11 +1,11 @@
-ID,customer_ID,title,urgency_code,status_code
-10010001-b60a-4a9e-96e5-80f342b534c5,10010000-b60a-4a9e-96e5-80f342b534c5,Issue with login,H,I
-10010002-b60a-4a9e-96e5-80f342b534c5,10010000-b60a-4a9e-96e5-80f342b534c5,Unable to reset password,M,N
-10020001-b60a-4a9e-96e5-80f342b534c6,10020000-b60a-4a9e-96e5-80f342b534c6,Error on checkout page,H,R
-10020002-b60a-4a9e-96e5-80f342b534c6,10020000-b60a-4a9e-96e5-80f342b534c6,Shipping address not updating,L,C
-10030001-b60a-4a9e-96e5-80f342b534c7,10030000-b60a-4a9e-96e5-80f342b534c7,App crashes on startup,H,N
-10030002-b60a-4a9e-96e5-80f342b534c7,10030000-b60a-4a9e-96e5-80f342b534c7,Notification settings not saving,M,I
-10040001-b60a-4a9e-96e5-80f342b534c8,10040000-b60a-4a9e-96e5-80f342b534c8,Payment gateway timeout,M,H
-10040002-b60a-4a9e-96e5-80f342b534c8,10040000-b60a-4a9e-96e5-80f342b534c8,Unable to apply discount code,L,R
-10050001-b60a-4a9e-96e5-80f342b534c9,10050000-b60a-4a9e-96e5-80f342b534c9,Feature request: Dark mode,L,C
-10050002-b60a-4a9e-96e5-80f342b534c9,10050000-b60a-4a9e-96e5-80f342b534c9,Bug: Profile picture not uploading,M,N
+ID,customer_ID,title,urgency_code,status_code,assignedTo_ID
+10010001-b60a-4a9e-96e5-80f342b534c5,10010000-b60a-4a9e-96e5-80f342b534c5,Issue with login,H,I,10000000-b60a-4a9e-96e5-80f342b534c9
+10010002-b60a-4a9e-96e5-80f342b534c5,10010000-b60a-4a9e-96e5-80f342b534c5,Unable to reset password,M,N,null,
+10020001-b60a-4a9e-96e5-80f342b534c6,10020000-b60a-4a9e-96e5-80f342b534c6,Error on checkout page,H,R,10000000-b60a-4a9e-96e5-80f342b534c9,
+10020002-b60a-4a9e-96e5-80f342b534c6,10020000-b60a-4a9e-96e5-80f342b534c6,Shipping address not updating,L,C,
+10030001-b60a-4a9e-96e5-80f342b534c7,10030000-b60a-4a9e-96e5-80f342b534c7,App crashes on startup,H,N,null,
+10030002-b60a-4a9e-96e5-80f342b534c7,10030000-b60a-4a9e-96e5-80f342b534c7,Notification settings not saving,M,I,null,
+10040001-b60a-4a9e-96e5-80f342b534c8,10040000-b60a-4a9e-96e5-80f342b534c8,Payment gateway timeout,M,H,null,
+10040002-b60a-4a9e-96e5-80f342b534c8,10040000-b60a-4a9e-96e5-80f342b534c8,Unable to apply discount code,L,R,null,
+10050001-b60a-4a9e-96e5-80f342b534c9,10050000-b60a-4a9e-96e5-80f342b534c9,Feature request: Dark mode,L,C,null,
+10050002-b60a-4a9e-96e5-80f342b534c9,10050000-b60a-4a9e-96e5-80f342b534c9,Bug: Profile picture not uploading,M,N,null,

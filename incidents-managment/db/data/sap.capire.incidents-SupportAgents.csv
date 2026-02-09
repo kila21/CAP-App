@@ -1,0 +1,5 @@
+ID,userId,firstName,lastName,email,expertise,active
+10000000-b60a-4a9e-96e5-80f342b534c9,alice.support,Alice,Johnson,alice@support.com,Technical,true
+10000001-b60a-4a9e-96e5-80f342b534c9,bob.support,Bob,Smith,bob@support.com,Billing,true
+10000002-b60a-4a9e-96e5-80f342b534c9,charlie.support,Charlie,Davis,charlie@support.com,General,true
+10000003-b60a-4a9e-96e5-80f342b534c9,diana.support,Diana,Wilson,diana@support.com,Technical,true

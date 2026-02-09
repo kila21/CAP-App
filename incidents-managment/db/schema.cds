@@ -8,7 +8,7 @@ entity Incidents : cuid, managed {
   urgency  : Association to Urgency;
   status   : Association to Status;
 
-  assignedTo : String;
+  assignedTo : Association to SupportAgents;
   resolutionNotes : String;
   closureReason : String;
   resolvedAt: DateTime;
@@ -30,6 +30,15 @@ entity Customers : cuid, managed {
   email     : String;
   phone     : String;
   incidents : Association to many Incidents on incidents.customer = $self;
+}
+
+entity SupportAgents: cuid, managed {
+  userId: String;
+  firstName: String;
+  lastName: String;
+  email: String;
+  expertise: String;
+  active: Boolean default true;
 }
 
 entity Status : CodeList {
