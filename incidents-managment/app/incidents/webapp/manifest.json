@@ -65,6 +65,17 @@
         "sap.fe.templates": {}
       }
     },
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {
+          "sap.fe.templates.ObjectPage.ObjectPageController": {
+            "controllerNames": [
+              "ns.incidents.ext.controller.ObjectPageExtension"
+            ]
+          }
+        }
+      }
+    },
     "contentDensities": {
       "compact": true,
       "cozy": true
@@ -205,8 +216,8 @@
                 "header": {
                   "actions": {
                     "CloseIncidentCustom": {
-                      "press": "ns.incidents.ext.controller.CloseIncidentWithMessageBox.closeIncidentWithMessageBox",
-                      "text": "{i18n>closeIncidentWithMessagebox}",
+                      "press": ".extension.ns.incidents.ext.controller.ObjectPageExtension.closeIncidentWithExtension",
+                      "text": "{i18n>closeIncidentWithExtension}",
                       "position": {
                         "anchor": "DataFieldForAction::ProcessorService.CloseIncident",
                         "placement": "After"
