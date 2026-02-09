@@ -43,7 +43,6 @@ class ProcessorService extends cds.ApplicationService {
 
     async putOnHold (req) {
         const { ID } = req.params[0];
-        console.log("req put on hold: ", req)
         const { reason } = req.data;
 
         await INSERT.into(this.Conversations).entries({

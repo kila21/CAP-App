@@ -2,10 +2,17 @@ using { sap.capire.incidents as incidents } from '../db/schema';
 
 service ProcessorService {
     entity Incidents as projection on incidents.Incidents actions {
-        action AssignToAgent(agentId: String) returns Incidents;
+        action AssignToAgent(agentId: String) returns Incidents;        
         action PutOnHold(reason: String) returns Incidents;
 
-        @Core.OperationAvailable : { $edmJson: { $Ne: [{ $Path: 'status_code'}, 'C'] } }
+        @Core.OperationAvailable : { 
+            $edmJson: { 
+                $And: [
+                    { $Eq: [ { $Path: 'IsActiveEntity' }, true ] },
+                    { $Ne: [ { $Path: 'status_code' }, 'C' ] }
+                ] 
+            }
+        }
         action CloseIncident(reason: String @Common.Label : 'Closer Reason') returns Incidents;
     };
 
