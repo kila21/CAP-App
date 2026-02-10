@@ -106,13 +106,27 @@ annotate service.Incidents with @(
             $Type: 'UI.DataFieldForAction',
             Action: 'ProcessorService.PutOnHold',
             Label: '{i18n>PutOnHold}',
-            ![@UI.Hidden] : { $edmJson: { $Ne: [{ $Path: 'status_code'}, 'A'] } }
+            @UI.Hidden : { 
+                $edmJson: { 
+                    $Or: [
+                        { $Ne: [{ $Path: 'status_code'}, 'A'] },
+                        { $Eq: [ { $Path: 'IsActiveEntity' }, false ] },        
+                    ]
+                }
+            }
         },
         {
             $Type: 'UI.DataFieldForAction',
             Action: 'ProcessorService.AssignToAgent',
             Label: '{i18n>AssignToAgent}',
-            ![@UI.Hidden] : { $edmJson: { $Ne: [{ $Path: 'status_code'}, 'N'] } }
+            @UI.Hidden : { 
+                $edmJson: { 
+                    $Or: [
+                        { $Ne: [{ $Path: 'status_code'}, 'N'] },
+                        { $Eq: [ { $Path: 'IsActiveEntity' }, false ] },
+                    ]
+                } 
+            }
         }
     ]
 );
