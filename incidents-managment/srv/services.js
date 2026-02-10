@@ -37,6 +37,14 @@ class ProcessorService extends cds.ApplicationService {
 
     async closeIncident (req) {
         const { ID } = req.params[0];
+        const { reason } = req.data;
+
+        await INSERT.into(this.Conversations).entries({
+            incident_ID: ID,
+            author: req.user.id,
+            message: `Incident Closed By ${req.user.id}. Reason: ${reason}`,
+            timestamp: new Date().toISOString()
+        })
         await UPDATE(req.subject).set({ status_code: 'C' }).where({ ID });
         return SELECT.one.from(req.subject).where({ ID });
     }

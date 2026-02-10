@@ -273,6 +273,7 @@ annotate service.Incidents actions {
     CloseIncident @(
         Common.SideEffects: {
             TargetProperties: [ 'status_code', 'status' ],
+            TargetEntities: ['conversation']
         }
     );
 
